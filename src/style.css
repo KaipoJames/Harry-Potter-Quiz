@@ -1,3 +1,9 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 header {
   display: flex;
   align-items: center;
@@ -25,6 +31,8 @@ header {
 }
 .result-img {
   margin-left: 1rem;
+  width: 2.5rem;
+  height: auto;
 }
 
 ul {
