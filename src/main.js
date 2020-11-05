@@ -20,18 +20,25 @@ let x;
 let selectedAnswer;
 let correct_guesses;
 let incorrect_guesses;
-let finalScore;
+let final_score;
 
-const app = {
+var start_timer;
+var end_timer;
+
+export const app = {
 
     init() {
         //Display Start Screen
         this.displayStartScreen();
+    },
 
+    //Start Quiz is Implemenented in start.js
+    startQuiz() {
         //initialize variables;
         correct_guesses = 0;
         incorrect_guesses = 0;
-        finalScore = 0;
+        final_score = 0;
+        start_timer = performance.now();
 
         //Start Quiz
         this.renderQuestion();
@@ -50,7 +57,7 @@ const app = {
     renderQuestion()
     {
         x = this.getCurrentQuestion();
-        question_text.innerHTML = x.question;
+        question_text.innerHTML = "Question " + x.id + ") " + x.question;
         answerA_text.innerHTML = x.answer_A;
         answerB_text.innerHTML = x.answer_B;
         answerC_text.innerHTML = x.answer_C;
@@ -65,7 +72,10 @@ const app = {
             console.log("Test Completed! Standby for results.");
             console.log("Correct Answers: " + correct_guesses);
             console.log("Incorrect Answers: " + incorrect_guesses);
-            this.calculateFinalScore(correct_guesses, incorrect_guesses);
+
+            let time = this.calculateQuizTime();
+
+            this.calculateFinalScore(correct_guesses, incorrect_guesses, time);
             this.addRetryButton();
         }
     },
@@ -104,9 +114,26 @@ const app = {
             incorrect_guesses++;
         }
     },
-    calculateFinalScore(correct_guesses, incorrect_guesses) {
-        let final_score = 2 * (correct_guesses - (incorrect_guesses/2));
+
+    calculateFinalScore(correct_guesses, incorrect_guesses, time) {
+        final_score = 200 * (correct_guesses - (incorrect_guesses/2));
+        if (correct_guesses >= incorrect_guesses) {
+            console.log("You qualify for a time bonus!");
+            this.addTimeBonus(time);
+        }
         console.log("Your Score: " + final_score);
+    },
+    addTimeBonus(time) {
+        let bonus = 0;
+        if (time <= 59) {
+            bonus = 100;
+        } else if (time >= 60 && time <= 79) {
+            bonus = 75;
+        } else {
+            bonus = 50;
+        }
+        console.log("+ " + bonus + " points!");
+        final_score += bonus;
     },
     addRetryButton() {
         const retryBtn = document.createElement("h3");
@@ -116,7 +143,14 @@ const app = {
         retryBtn.addEventListener("click", () => {
             location.reload();
         })
+    },
+    calculateQuizTime() {
+        end_timer = performance.now();
+        let completion_time = ((end_timer - start_timer) / 1000).toFixed(1);
+        console.log("You Completed The Quiz in " + completion_time + " seconds.");
+        return completion_time;
     }
+    
 
 }
 

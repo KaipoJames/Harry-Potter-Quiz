@@ -1,3 +1,5 @@
+import { app as App } from "./main.js"
+
 const body = document.body;
 
 export const Start = {
@@ -47,6 +49,7 @@ export const Start = {
         //Remove Start Screen
         startBtn.addEventListener("click", () => {
             screen.style.display = "none";
+            App.startQuiz();
         })
     }   
 }
