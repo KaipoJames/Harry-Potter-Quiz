@@ -38,30 +38,34 @@ export const app = {
         correct_guesses = 0;
         incorrect_guesses = 0;
         final_score = 0;
+
+        //Start the Timer
         start_timer = performance.now();
 
-        //Start Quiz
+        //Display First Question
         this.renderQuestion();
         this.addEventListeners();
     },
+
+    // <-- APP HELPER METHODS -->
 
     displayStartScreen() {
         Start.init();
     },
 
+    // Helper methods to render questions
     getCurrentQuestion() {
         x = questions[currentQuestionIndex];
         return x;
     },
-
     renderQuestion()
     {
         x = this.getCurrentQuestion();
         question_text.innerHTML = "Question " + x.id + ") " + x.question;
-        answerA_text.innerHTML = x.answer_A;
-        answerB_text.innerHTML = x.answer_B;
-        answerC_text.innerHTML = x.answer_C;
-        answerD_text.innerHTML = x.answer_D;
+        answerA_text.innerHTML = "A) " + x.answer_A;
+        answerB_text.innerHTML = "B) " + x.answer_B;
+        answerC_text.innerHTML = "C) " + x.answer_C;
+        answerD_text.innerHTML = "D) " + x.answer_D;
     },
     renderNextQuestion() {
         if (currentQuestionIndex != lastQuestionIndex) {
@@ -79,11 +83,10 @@ export const app = {
             this.addRetryButton();
         }
     },
-
     addEventListeners() {
         for (let answer of answers) {
             answer.addEventListener("click", () => {
-                selectedAnswer = answer.innerHTML;
+                selectedAnswer = answer.innerHTML.slice(3);
                 x = this.getCurrentQuestion();
                 this.showResult(selectedAnswer, x);
             })
@@ -115,8 +118,9 @@ export const app = {
         }
     },
 
+    // Helper methods to handle post quiz
     calculateFinalScore(correct_guesses, incorrect_guesses, time) {
-        final_score = 200 * (correct_guesses - (incorrect_guesses/2));
+        final_score = 20 * (correct_guesses - (incorrect_guesses/2));
         if (correct_guesses >= incorrect_guesses) {
             console.log("You qualify for a time bonus!");
             this.addTimeBonus(time);
@@ -154,4 +158,5 @@ export const app = {
 
 }
 
+// Initialize application
 app.init();

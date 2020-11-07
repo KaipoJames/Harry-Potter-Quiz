@@ -2,6 +2,7 @@ import { app as App } from "./main.js"
 
 const body = document.body;
 
+// <-- Display Start Screen Before Quiz Starts -->
 export const Start = {
 
     init() {
